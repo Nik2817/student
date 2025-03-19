@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <style>
+           /* Sidebar Styling */
+           .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #f1f1f1;
+            color: #333;
+            position: fixed;
+            padding: 30px 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .sidebar-header p {
+            font-size: 14px;
+            color: #777;
+        }
+        .profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 10px 0;
+        }
+        .profile h4 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .sidebar ul li a:hover {
+            background: #ff5722;
+            color: #fff;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 270px;
+            padding: 30px;
+            background: #f9f9f9;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .search-bar input {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-bar button {
+            padding: 10px 15px;
+            background: #ff5722;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* Profile Section */
+        .profile-card {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            padding: 30px;
+            background-image: url('/cover.jpg');
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 5px solid #ff5722;
+        }
+        .profile-info h2 {
+            margin: 0;
+            color: #E5B20A;
+            font-size: 24px;
+        }
+        .profile-info p {
+            margin: 5px 0;
+            color: #ffeded;
+        }
+
+        /* About Section */
+        .about-section {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        .about-section h2, .about-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .about-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        /* Current Openings Section */
+        .section_open {
+            margin-top: 40px;
+        }
+        .open_h2 {
+            text-align: center;
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .div_open {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .opening-1 {
+            background: #003054;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            width: 350px;
+            text-align: center;
+        }
+      
+        .openingimp {
+            font-size: 22px;
+            font-weight: bold;
+            color: #edf7ff;
+        }
+        .company_name {
+            font-size: 16px;
+            color: #ffffff;
+        }
+        .onclick_butn {
+            display: inline-block;
+            background: #E5B20A;
+            color: #000000;
+            padding: 10px 20px;
+            margin-top: 15px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .onclick_butn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Popup Form */
+        .form_popup_content {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup_form {
+            width: 600px;
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            transform: scale(0.9);
+            transition: 0.4s;
+        }
+        .onclickbtn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 26px;
+            color: #555;
+            cursor: pointer;
+        }
+        .submit_post input, .submit_post button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn-btn {
+            display: flex;
+            justify-content: space-between;
+        }
+        .submit-btn-btn, .close-btn {
+            background: #ff5722;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .submit-btn-btn:hover, .close-btn:hover {
+            background: #e64a19;
+        }
+        .submit-btn-btn{
+            background: #003054; 
+            width: 20%;
+             color: white;
+              padding: 12px 30px;
+               border: none;
+                border-radius: 8px;
+                 cursor: pointer;
+                  font-size: 16px; 
+                  transition: background 0.3s;
+                
+        }
+        .close-btn{
+            background: #ccc;
+             width: 20%;
+              color: #555; 
+              padding: 12px 30px; 
+              border: none; 
+              height: 51px;
+              width: 72px;
+              border-radius: 8px; 
+              cursor: pointer;
+               font-size: 16px; 
+             
+               transition: background 0.3s;
+        }
+        /* Navigation Tabs Styling */
+.nav-tabs {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;   /* Space between buttons */
+    border-bottom: 2px solid #ddd;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom: -2px; /* Aligns with the bottom border */
+}
+
+.nav-tabs .nav-link {
+    color: #555;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #007bff;
+    border-bottom: 3px solid #007bff;
+}
+
+.nav-tabs .nav-link.active {
+    color: #FF4B2B;
+    border-bottom: 3px solid #FF4B2B;
+    background: transparent;
+}
+
+.custom-table th{
+    background-color: var(--primary-color);
+    color: white;
+}
+.custom-content{
+    background-color: white;
+    padding: 30px;
+}
+.custom-content h2{
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+ 
+.card {
+    transition: all 0.3s ease-in-out;
+    border: none;
+    border-radius: 12px;
+}
+
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #003054;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.btn {
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2>Careervala</h2>
+        <p>Student Dashboard</p>
+    </div>
+    <div class="profile">
+        <img src="/pic1.jpg" alt="Profile">
+        <h4>Franklin Jr</h4>
+        <p>Superadmin</p>
+    </div>
+    <ul>
+        <li><a href="javascript:void(0);" onclick="showTab('profile')">Profile</a></li>
+        <li><a href="javascript:void(0);" onclick="showTab('Openings')">Current Openings</a></li>
+        <li><a href="javascript:void(0);" onclick="showTab('applications')">My Applications</a></li>
+        <li><a href="javascript:void(0);" onclick="showTab('logout')">Logout</a></li>
+    </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Profile Tab -->
+    <div id="profile" class="tab-content" style="display: block;">
+        <header>
+            <h2>Dashboard</h2>
+           
+            <div class="user-profile">
+                <img src="/profile.png" alt="User">
+            </div>
+        </header>
+
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <img src="/profile.png" alt="User" class="profile-pic">
+            <div class="profile-info">
+                <h2>Mitchell C. Shay</h2>
+                <p>UX / UI Designer</p>
+                <p>info@example.com</p>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav-tabs">
+           
+            <li class="nav-item"><a href="#" class="nav-link active">About Me</a></li>
+        </ul>
+        <div class="tab-pane fade" id="registration" role="tabpanel">
+            <div class="box shadow-sm border rounded bg-white mb-3">
+                <div class="box-title border-bottom p-3">
+                    <h2 class="text-center">Employee Registration</h2>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Enter Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text" class="form-control" placeholder="Enter Contact Number"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <select class="form-control">
+                                <option>HR</option>
+                                <option>IT</option>
+                                <option>Finance</option>
+                                <option>Marketing</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn custom-btn w-100">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="about-section">
+            <h2>About Me</h2>
+            <p>I'm a passionate and detail-oriented Web Developer.</p>
+            
+            <h3>Skills</h3>
+            <div class="skills">
+                <span class="skill-tag">HTML5</span>
+                <span class="skill-tag">CSS</span>
+                <span class="skill-tag">Bootstrap</span>
+                <span class="skill-tag">PHP</span>
+                <span class="skill-tag">MYSQL</span>
+                <span class="skill-tag">JAVA</span>
+            </div>
+            
+            <h3>Languages</h3>
+            <div class="languages">
+                <span class="lang-tag">English</span>
+                <span class="lang-tag">French</span>
+                <span class="lang-tag">German</span>
+            </div>
+            <h3>Personal Information</h3>
+                    <div class="personal-info">
+                        <p><strong>Name:</strong> Mitchell C. Shay</p>
+                        <p><strong>Contact:</strong>271221331</p>
+                        <p><strong>Education:</strong>BE</p>
+                        <p><strong>Email:</strong> example@example.com</p>
+                        <p><strong>Availability:</strong> Full Time (Freelancer)</p>
+                        <p><strong>Industry:</strong> Data science</p>
+                    </div>
+        </div>
+
+        
+    </div>
+
+    <!-- Applications Tab -->
+    <div id="applications" class="tab-content" style="display: none;">
+        <h2>My Applications</h2>
+        <div class="container mt-5 custom-content">
+            <h2 class="mb-3">Job List</h2>
+            <div class="table-responsive custom-table">
+                <table id="jobTable" class="table table-hover table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>No</th>
+                            <th>Position</th>
+                            <th>Type</th>
+                            <th>Posted Date</th>
+                            <th>Last Date To Apply</th>
+                            <th>Close Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Network Engineer</td>
+                            <td>Full-Time</td>
+                            <td>12-01-2024</td>
+                            <td>24-01-2024</td>
+                            <td>25-01-2024</td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td>
+                                <i class="fa fa-eye text-success action-icon"></i>
+                                <i class="fa fa-edit text-primary action-icon"></i>
+                                <i class="fa fa-trash text-danger action-icon"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Entry Level Software Developer</td>
+                            <td>Part-Time</td>
+                            <td>13-01-2024</td>
+                            <td>25-01-2024</td>
+                            <td>26-01-2024</td>
+                            <td><span class="badge bg-danger">InActive</span></td>
+                            <td>
+                                <i class="fa fa-eye text-success action-icon"></i>
+                                <i class="fa fa-edit text-primary action-icon"></i>
+                                <i class="fa fa-trash text-danger action-icon"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Java Developer</td>
+                            <td>Full-Time</td>
+                            <td>13-01-2024</td>
+                            <td>26-01-2024</td>
+                            <td>27-01-2024</td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td>
+                                <i class="fa fa-eye text-success action-icon"></i>
+                                <i class="fa fa-edit text-primary action-icon"></i>
+                                <i class="fa fa-trash text-danger action-icon"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+           
+       
+
+    </div>
+
+    
+    <!-- Applications Tab -->
+    <div id="Openings" class="tab-content" style="display: none;">
+        <h2>Current Openings</h2>
+        <div class="container mt-5 custom-content">
+            
+            <div class="table-responsive custom-table">
+                <div class="container mt-4">
+                    <div class="row g-4">
+                        
+                        <!-- Card 1 -->
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Software Engineer</h5>
+                                    <p class="card-text"><strong>Type:</strong> Full-Time</p>
+                                    <p class="card-text"><strong>Location:</strong> Pune, India</p>
+                                    <p class="card-text"><strong>Last Date:</strong> 31-03-2025</p>
+                                    <p class="card-text"><strong>WFH/WFO:</strong> WFH</p>
+                                    <p class="card-text"><strong>Company:</strong> Tech Solutions</p>
+                                    <a href="apply.html" class="btn btn-success w-100">Apply</a>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Card 2 -->
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Web Developer</h5>
+                                    <p class="card-text"><strong>Type:</strong> Part-Time</p>
+                                    <p class="card-text"><strong>Location:</strong> Mumbai, India</p>
+                                    <p class="card-text"><strong>Last Date:</strong> 28-03-2025</p>
+                                    <p class="card-text"><strong>WFH/WFO:</strong> WFO</p>
+                                    <p class="card-text"><strong>Company:</strong> Media Corp</p>
+                                    <a href="apply.html" class="btn btn-success w-100">Apply</a>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Card 3 -->
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Data Analyst</h5>
+                                    <p class="card-text"><strong>Type:</strong> Full-Time</p>
+                                    <p class="card-text"><strong>Location:</strong> Bangalore, India</p>
+                                    <p class="card-text"><strong>Last Date:</strong> 30-03-2025</p>
+                                    <p class="card-text"><strong>WFH/WFO:</strong> Hybrid</p>
+                                    <p class="card-text"><strong>Company:</strong> Data Insights Ltd</p>
+                                    <a href="apply.html" class="btn btn-success w-100">Apply</a>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!-- Card 4 -->
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Graphic Designer</h5>
+                                    <p class="card-text"><strong>Type:</strong> Contract</p>
+                                    <p class="card-text"><strong>Location:</strong> Delhi, India</p>
+                                    <p class="card-text"><strong>Last Date:</strong> 29-03-2025</p>
+                                    <p class="card-text"><strong>WFH/WFO:</strong> WFO</p>
+                                    <p class="card-text"><strong>Company:</strong> Creative Minds</p>
+                                    <a href="apply.html" class="btn btn-success w-100">Apply</a>
+                                </div>
+                            </div>
+                        </div>
+                
+                    </div>
+                </div>
+                
+                
+
+    </div>
+   
+
+</div>
+<!-- Logout Tab -->
+<div id="logout" class="tab-content" style="display: none; text-align: center; padding: 185px 20px;">
+    <header>
+        <h1 style="padding-left: 210px;">You have been logged out</h1>
+      
+        <!-- Buttons Section -->
+    </header>
+    <div >
+        <a href="login.html" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+<!-- Popup Form -->
+<div id="popup-form" class="form_popup_content" style="display: none;">
+    <div class="popup_form">
+        <span onclick="closePopup()" class="onclickbtn">&times;</span>
+        <h2 class="h2_btn">Apply for Job</h2>
+        <form action="submit_application.php" method="POST">
+            <label>Position:</label>
+            <input type="text" id="popup-position" name="position" readonly>
+            
+            <label>Company:</label>
+            <input type="text" id="popup-company" name="company" readonly>
+            
+            <label>Location:</label>
+            <input type="text" id="popup-location" name="location" readonly>
+
+            <div class="btn-btn">
+                <button type="submit" class="submit-btn-btn">Apply</button>
+                <button type="button" onclick="closePopup()" class="close-btn">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showTab(tabId) {
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.style.display = 'none');
+    document.getElementById(tabId).style.display = 'block';
+}
+
+function openPopup(position, company, location) {
+    document.getElementById("popup-form").style.display = "flex";
+    document.getElementById("popup-position").value = position;
+    document.getElementById("popup-company").value = company;
+    document.getElementById("popup-location").value = location;
+}
+
+function closePopup() {
+    document.getElementById("popup-form").style.display = "none";
+}
+
+</script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ 
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+ 
+<!-- DataTable Initialization Script -->
+<script>
+    $(document).ready(function () {
+        $('#jobTable').DataTable({
+            "paging": true,          // Enable pagination
+            "searching": true,       // Enable search
+            "ordering": true,        // Enable column sorting
+            "info": true,            // Show table info
+            "lengthMenu": [5, 10, 25, 50], // Define entries per page
+            "language": {
+                "search": "Search Jobs:",
+                "lengthMenu": "Show _MENU_ entries",
+                "info": "Showing _START_ to _END_ of _TOTAL_ jobs",
+                "paginate": {
+                    "next": "Next",
+                    "previous": "Previous"
+                }
+            }
+        });
+    });
+    function openLogoutTab() {
+        // Hide all tab-content sections
+        var tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.style.display = 'none';
+        });
+
+        // Show the logout tab
+        document.getElementById('logout').style.display = 'block';
+    }
+</script>
+ 
+</body>
+</html>
