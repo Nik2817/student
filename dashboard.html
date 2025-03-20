@@ -4,15 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Admin Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <style>
+        /* CSS Styling */
+        
+/* Dashboard */
+.navbar {
+    background: #003054;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.sidebar {
+    width: 20%;
+    float: left;
+    background: #f4f4f4;
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #003054;
+    display: block;
+    padding: 10px;
+    background: #ccc;
+}
+
+.sidebar ul li a:hover {
+    background: #bbb;
+}
+
+.content {
+    width: 80%;
+    float: left;
+    padding: 20px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+        .custom-table {
+    height: 351px;
+    width: 936px;
+}
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 320px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .card-header img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .card-header h4 {
+            margin: 0;
+            font-size: 22px;
+            color: #003054;
+        }
+
+        .card-header span {
+            font-size: 14px;
+            color: #1f0606;
+        }
+
+        .card-body {
+            margin: 0px 0;
+        }
+
+        .card-body h3 {
+            font-size: 24px;
+            margin: 0 0 15px 0;
+            color: #000;
+        }
+
+        .tags {
+            display: flex;
+            gap: 12px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #f1f1f1;
+            color: #000000;
+            font-size: 14px;
+            padding: 1px 2px;
+            border-radius: 20px;
+        }
+
+        .price, .location {
+            font-size: 16px;
+            color: #000;
+            font-weight: bold;
+            margin: 4px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .price i, .location i {
+            margin-right: 10px;
+            color: #007BFF;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #003054;
+            background: #007BFF;
+            padding: 12px 25px;
+            border-radius: 6px;
+            transition: 0.3s;
+            text-align: center;
+            font-size: 16px;
+        }
+
+       
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
            /* Sidebar Styling */
            .sidebar {
             width: 250px;
             height: 100vh;
-            background: #f1f1f1;
+            background: #003054;
             color: #333;
             position: fixed;
             padding: 30px 20px;
@@ -48,7 +206,7 @@
             transition: 0.3s;
         }
         .sidebar ul li a:hover {
-            background: #ff5722;
+            background:#E5B20A;
             color: #fff;
         }
 
@@ -72,7 +230,7 @@
         }
         .search-bar button {
             padding: 10px 15px;
-            background: #ff5722;
+            background:#E5B20A;
             color: #fff;
             border: none;
             cursor: pointer;
@@ -82,7 +240,28 @@
             height: 40px;
             border-radius: 50%;
         }
+        .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
+.skill-tag {
+    display: inline-block;
+    background: #003054; /* Dark blue */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.skill-tag:hover {
+    background: #0056b3; /* Lighter blue on hover */
+    transform: translateY(-5px);
+}
         /* Profile Section */
         .profile-card {
             display: flex;
@@ -99,7 +278,7 @@
             height: 120px;
             border-radius: 50%;
             margin-right: 20px;
-            border: 5px solid #ff5722;
+            border: 5px solid#E5B20A;
         }
         .profile-info h2 {
             margin: 0;
@@ -222,7 +401,7 @@
             justify-content: space-between;
         }
         .submit-btn-btn, .close-btn {
-            background: #ff5722;
+            background:#E5B20A;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -304,48 +483,154 @@
     color: var(--primary-color);
     font-weight: bold;
 }
- 
-.card {
-    transition: all 0.3s ease-in-out;
-    border: none;
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.cards-wrapper {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+}
+/* Logout Tab Styling */
+.logout-container {
+    max-width: 600px;
+    margin: 100px auto;
+    padding: 40px;
+    background: #003054;  /* Updated background color */
     border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: 0.3s;
 }
 
-
-.card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #003054;
+.logout-container:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
-.card-text {
-    font-size: 0.9rem;
-    color: #555;
+.logout-container h1 {
+    font-size: 32px;
+    color: #fff;  /* White text for better contrast */
+    margin-bottom: 20px;
 }
 
-.btn {
-    transition: all 0.3s;
+.logout-container p {
+    font-size: 18px;
+    color: #d1d1d1;  /* Light gray text */
+    margin-bottom: 30px;
 }
 
-.btn:hover {
-    transform: scale(1.05);
+.logout-container .btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #E5B20A;
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
 }
 
+.logout-container .btn:hover {
+    background: #c99408;
+    transform: translateY(-3px);
+}
+/* Popup Styling */
+.form_popup_content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
 
-    </style>
+.popup_form {
+    background: #fff;
+    padding: 30px;
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.onclickbtn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.h2_btn {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submit-btn-btn, .close-btn {
+    padding: 10px 20px;
+    border: none;
+    background: #003054;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.submit-btn-btn:hover, .close-btn:hover {
+    background: #0056b3;
+}
+
+    .pagination .page-link {
+        color: #007bff;
+        cursor: pointer;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+</style>
+
 </head>
 <body>
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <div class="sidebar-header">
+    <div class="sidebar-header" style="color: white;">
         <h2>Careervala</h2>
         <p>Student Dashboard</p>
     </div>
-    <div class="profile">
+    <div class="profile" style="color: white;">
         <img src="/pic1.jpg" alt="Profile">
-        <h4>Franklin Jr</h4>
-        <p>Superadmin</p>
+        <h4>Mitchell C. Shay</h4>
+       
     </div>
     <ul>
         <li><a href="javascript:void(0);" onclick="showTab('profile')">Profile</a></li>
@@ -362,15 +647,11 @@
     <div id="profile" class="tab-content" style="display: block;">
         <header>
             <h2>Dashboard</h2>
-           
-            <div class="user-profile">
-                <img src="/profile.png" alt="User">
-            </div>
         </header>
 
         <!-- Profile Card -->
         <div class="profile-card">
-            <img src="/profile.png" alt="User" class="profile-pic">
+            <img src="/pic1.jpg" alt="User" class="profile-pic">
             <div class="profile-info">
                 <h2>Mitchell C. Shay</h2>
                 <p>UX / UI Designer</p>
@@ -421,7 +702,7 @@
             <h2>About Me</h2>
             <p>I'm a passionate and detail-oriented Web Developer.</p>
             
-            <h3>Skills</h3>
+            <p><strong>Skills</p>
             <div class="skills">
                 <span class="skill-tag">HTML5</span>
                 <span class="skill-tag">CSS</span>
@@ -430,18 +711,12 @@
                 <span class="skill-tag">MYSQL</span>
                 <span class="skill-tag">JAVA</span>
             </div>
-            
-            <h3>Languages</h3>
-            <div class="languages">
-                <span class="lang-tag">English</span>
-                <span class="lang-tag">French</span>
-                <span class="lang-tag">German</span>
-            </div>
-            <h3>Personal Information</h3>
+            <br>
+            <h4>Personal Information</h4><br>
                     <div class="personal-info">
                         <p><strong>Name:</strong> Mitchell C. Shay</p>
-                        <p><strong>Contact:</strong>271221331</p>
-                        <p><strong>Education:</strong>BE</p>
+                        <p><strong>Contact:</strong> 271221331</p>
+                        <p><strong>Education:</strong> BE</p>
                         <p><strong>Email:</strong> example@example.com</p>
                         <p><strong>Availability:</strong> Full Time (Freelancer)</p>
                         <p><strong>Industry:</strong> Data science</p>
@@ -453,21 +728,20 @@
 
     <!-- Applications Tab -->
     <div id="applications" class="tab-content" style="display: none;">
-        <h2>My Applications</h2>
+        <h2 style="text-align: center;">My Applications</h2>
         <div class="container mt-5 custom-content">
-            <h2 class="mb-3">Job List</h2>
             <div class="table-responsive custom-table">
                 <table id="jobTable" class="table table-hover table-bordered align-middle">
-                    <thead class="table-light">
+                    <thead class="table-light-table">
                         <tr>
-                            <th>No</th>
-                            <th>Position</th>
-                            <th>Type</th>
-                            <th>Posted Date</th>
-                            <th>Last Date To Apply</th>
-                            <th>Close Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th style="background-color: #003054; color: white;">No</th>
+                            <th style="background-color: #003054;color: white;">Position</th>
+                            <th style="background-color: #003054;color: white;">Type</th>
+                            <th style="background-color: #003054;color: white;" >Posted Date</th>
+                            <th style="background-color: #003054;color: white;">Last Date To Apply</th>
+                            <th style="background-color: #003054;color: white;">Close Date</th>
+                            <th style="background-color: #003054;color: white;" >Status</th>
+                            <th style="background-color: #003054;color: white;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -523,135 +797,350 @@
     </div>
 
     
-    <!-- Applications Tab -->
-    <div id="Openings" class="tab-content" style="display: none;">
-        <h2>Current Openings</h2>
-        <div class="container mt-5 custom-content">
+    <!-- Current Openings -->
+<!-- Current Openings -->
+<div id="Openings" class="tab-content" style="display: none;">
+    <h2 style="text-align: center;">Current Openings</h2>
+
+    <div class="container py-5">
+        <div class="row g-4">
+
+            <!-- Card 1 -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header d-flex align-items-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732084.png" alt="Amazon" width="40" class="me-3">
+                        <div>
+                            <h5 class="mb-0">Amazon <i class="fab fa-amazon" style="color: #ff9900;"></i></h5>
+                            <small>5 days ago</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4><i class="fas fa-palette"></i> Senior UI/UX Designer</h4>
+                        <div class="mb-2">
+                            <span class="badge bg-primary"><i class="fas fa-clock"></i> Part-time</span>
+                            <span class="badge bg-secondary"><i class="fas fa-briefcase"></i> Senior level</span>
+                        </div>
+                        <p class="mb-1"><i class="fas fa-dollar-sign"></i> $85k - $100k/year</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Seattle, WA</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                           onclick="openPopup('Senior UI/UX Designer', 'Amazon', 'Seattle, WA')">Apply Now <i class="fas fa-paper-plane"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header d-flex align-items-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732190.png" alt="Google" width="40" class="me-3">
+                        <div>
+                            <h5 class="mb-0">Google <i class="fab fa-google" style="color: #4285f4;"></i></h5>
+                            <small>3 days ago</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4><i class="fas fa-code"></i> Frontend Developer</h4>
+                        <div class="mb-2">
+                            <span class="badge bg-success"><i class="fas fa-briefcase"></i> Full-time</span>
+                            <span class="badge bg-info"><i class="fas fa-level-up-alt"></i> Mid level</span>
+                        </div>
+                        <p class="mb-1"><i class="fas fa-dollar-sign"></i> $90k - $120k/year</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Mountain View, CA</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                           onclick="openPopup('Frontend Developer', 'Google', 'Mountain View, CA')">Apply Now <i class="fas fa-paper-plane"></i></a>
+                    </div>
+                </div>
+            </div>
             
-            <div class="table-responsive custom-table">
-                <div class="container mt-4">
-                    <div class="row g-4">
-                        
-                        <!-- Card 1 -->
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="card shadow-sm h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Software Engineer</h5>
-                                    <p class="card-text"><strong>Type:</strong> Full-Time</p>
-                                    <p class="card-text"><strong>Location:</strong> Pune, India</p>
-                                    <p class="card-text"><strong>Last Date:</strong> 31-03-2025</p>
-                                    <p class="card-text"><strong>WFH/WFO:</strong> WFH</p>
-                                    <p class="card-text"><strong>Company:</strong> Tech Solutions</p>
-                                    <a href="apply.html" class="btn btn-success w-100">Apply</a>
-                                </div>
+            <!-- Card 1 -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header d-flex align-items-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732084.png" alt="Amazon" width="40" class="me-3">
+                        <div>
+                            <h5 class="mb-0">Amazon <i class="fab fa-amazon" style="color: #ff9900;"></i></h5>
+                            <small>5 days ago</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4><i class="fas fa-palette"></i> Senior UI/UX Designer</h4>
+                        <div class="mb-2">
+                            <span class="badge bg-primary"><i class="fas fa-clock"></i> Part-time</span>
+                            <span class="badge bg-secondary"><i class="fas fa-briefcase"></i> Senior level</span>
+                        </div>
+                        <p class="mb-1"><i class="fas fa-dollar-sign"></i> $85k - $100k/year</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Seattle, WA</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                           onclick="openPopup('Senior UI/UX Designer', 'Amazon', 'Seattle, WA')">Apply Now <i class="fas fa-paper-plane"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4">
+
+                <!-- Card 1 -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <img src="https://cdn-icons-png.flaticon.com/512/732/732084.png" alt="Amazon" width="40" class="me-3">
+                            <div>
+                                <h5 class="mb-0">Amazon <i class="fab fa-amazon" style="color: #ff9900;"></i></h5>
+                                <small>5 days ago</small>
                             </div>
                         </div>
-                
-                        <!-- Card 2 -->
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="card shadow-sm h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Web Developer</h5>
-                                    <p class="card-text"><strong>Type:</strong> Part-Time</p>
-                                    <p class="card-text"><strong>Location:</strong> Mumbai, India</p>
-                                    <p class="card-text"><strong>Last Date:</strong> 28-03-2025</p>
-                                    <p class="card-text"><strong>WFH/WFO:</strong> WFO</p>
-                                    <p class="card-text"><strong>Company:</strong> Media Corp</p>
-                                    <a href="apply.html" class="btn btn-success w-100">Apply</a>
-                                </div>
+                        <div class="card-body">
+                            <h4><i class="fas fa-palette"></i> Senior UI/UX Designer</h4>
+                            <div class="mb-2">
+                                <span class="badge bg-primary"><i class="fas fa-clock"></i> Part-time</span>
+                                <span class="badge bg-secondary"><i class="fas fa-briefcase"></i> Senior level</span>
+                            </div>
+                            <p class="mb-1"><i class="fas fa-dollar-sign"></i> $85k - $100k/year</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Seattle, WA</p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                               onclick="openPopup('Senior UI/UX Designer', 'Amazon', 'Seattle, WA')">Apply Now <i class="fas fa-paper-plane"></i></a>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Card 2 -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <img src="https://cdn-icons-png.flaticon.com/512/732/732190.png" alt="Google" width="40" class="me-3">
+                            <div>
+                                <h5 class="mb-0">Google <i class="fab fa-google" style="color: #4285f4;"></i></h5>
+                                <small>3 days ago</small>
                             </div>
                         </div>
-                
-                        <!-- Card 3 -->
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="card shadow-sm h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Data Analyst</h5>
-                                    <p class="card-text"><strong>Type:</strong> Full-Time</p>
-                                    <p class="card-text"><strong>Location:</strong> Bangalore, India</p>
-                                    <p class="card-text"><strong>Last Date:</strong> 30-03-2025</p>
-                                    <p class="card-text"><strong>WFH/WFO:</strong> Hybrid</p>
-                                    <p class="card-text"><strong>Company:</strong> Data Insights Ltd</p>
-                                    <a href="apply.html" class="btn btn-success w-100">Apply</a>
-                                </div>
+                        <div class="card-body">
+                            <h4><i class="fas fa-code"></i> Frontend Developer</h4>
+                            <div class="mb-2">
+                                <span class="badge bg-success"><i class="fas fa-briefcase"></i> Full-time</span>
+                                <span class="badge bg-info"><i class="fas fa-level-up-alt"></i> Mid level</span>
                             </div>
+                            <p class="mb-1"><i class="fas fa-dollar-sign"></i> $90k - $120k/year</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Mountain View, CA</p>
                         </div>
-                
-                        <!-- Card 4 -->
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="card shadow-sm h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">Graphic Designer</h5>
-                                    <p class="card-text"><strong>Type:</strong> Contract</p>
-                                    <p class="card-text"><strong>Location:</strong> Delhi, India</p>
-                                    <p class="card-text"><strong>Last Date:</strong> 29-03-2025</p>
-                                    <p class="card-text"><strong>WFH/WFO:</strong> WFO</p>
-                                    <p class="card-text"><strong>Company:</strong> Creative Minds</p>
-                                    <a href="apply.html" class="btn btn-success w-100">Apply</a>
-                                </div>
-                            </div>
+                        <div class="card-footer text-center">
+                            <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                               onclick="openPopup('Frontend Developer', 'Google', 'Mountain View, CA')">Apply Now <i class="fas fa-paper-plane"></i></a>
                         </div>
-                
                     </div>
                 </div>
                 
-                
+                <!-- Card 1 -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header d-flex align-items-center">
+                            <img src="https://cdn-icons-png.flaticon.com/512/732/732084.png" alt="Amazon" width="40" class="me-3">
+                            <div>
+                                <h5 class="mb-0">Amazon <i class="fab fa-amazon" style="color: #ff9900;"></i></h5>
+                                <small>5 days ago</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4><i class="fas fa-palette"></i> Senior UI/UX Designer</h4>
+                            <div class="mb-2">
+                                <span class="badge bg-primary"><i class="fas fa-clock"></i> Part-time</span>
+                                <span class="badge bg-secondary"><i class="fas fa-briefcase"></i> Senior level</span>
+                            </div>
+                            <p class="mb-1"><i class="fas fa-dollar-sign"></i> $85k - $100k/year</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Seattle, WA</p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                               onclick="openPopup('Senior UI/UX Designer', 'Amazon', 'Seattle, WA')">Apply Now <i class="fas fa-paper-plane"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4">
 
-    </div>
-   
+                    <!-- Card 1 -->
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header d-flex align-items-center">
+                                <img src="https://cdn-icons-png.flaticon.com/512/732/732084.png" alt="Amazon" width="40" class="me-3">
+                                <div>
+                                    <h5 class="mb-0">Amazon <i class="fab fa-amazon" style="color: #ff9900;"></i></h5>
+                                    <small>5 days ago</small>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h4><i class="fas fa-palette"></i> Senior UI/UX Designer</h4>
+                                <div class="mb-2">
+                                    <span class="badge bg-primary"><i class="fas fa-clock"></i> Part-time</span>
+                                    <span class="badge bg-secondary"><i class="fas fa-briefcase"></i> Senior level</span>
+                                </div>
+                                <p class="mb-1"><i class="fas fa-dollar-sign"></i> $85k - $100k/year</p>
+                                <p><i class="fas fa-map-marker-alt"></i> Seattle, WA</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                                   onclick="openPopup('Senior UI/UX Designer', 'Amazon', 'Seattle, WA')">Apply Now <i class="fas fa-paper-plane"></i></a>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Card 2 -->
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header d-flex align-items-center">
+                                <img src="https://cdn-icons-png.flaticon.com/512/732/732190.png" alt="Google" width="40" class="me-3">
+                                <div>
+                                    <h5 class="mb-0">Google <i class="fab fa-google" style="color: #4285f4;"></i></h5>
+                                    <small>3 days ago</small>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h4><i class="fas fa-code"></i> Frontend Developer</h4>
+                                <div class="mb-2">
+                                    <span class="badge bg-success"><i class="fas fa-briefcase"></i> Full-time</span>
+                                    <span class="badge bg-info"><i class="fas fa-level-up-alt"></i> Mid level</span>
+                                </div>
+                                <p class="mb-1"><i class="fas fa-dollar-sign"></i> $90k - $120k/year</p>
+                                <p><i class="fas fa-map-marker-alt"></i> Mountain View, CA</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                                   onclick="openPopup('Frontend Developer', 'Google', 'Mountain View, CA')">Apply Now <i class="fas fa-paper-plane"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Card 1 -->
+                    <div class="col-md-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header d-flex align-items-center">
+                                <img src="https://cdn-icons-png.flaticon.com/512/732/732084.png" alt="Amazon" width="40" class="me-3">
+                                <div>
+                                    <h5 class="mb-0">Amazon <i class="fab fa-amazon" style="color: #ff9900;"></i></h5>
+                                    <small>5 days ago</small>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h4><i class="fas fa-palette"></i> Senior UI/UX Designer</h4>
+                                <div class="mb-2">
+                                    <span class="badge bg-primary"><i class="fas fa-clock"></i> Part-time</span>
+                                    <span class="badge bg-secondary"><i class="fas fa-briefcase"></i> Senior level</span>
+                                </div>
+                                <p class="mb-1"><i class="fas fa-dollar-sign"></i> $85k - $100k/year</p>
+                                <p><i class="fas fa-map-marker-alt"></i> Seattle, WA</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="#" class="btn w-100" style="background-color: #003054; color: white;" 
+                                   onclick="openPopup('Senior UI/UX Designer', 'Amazon', 'Seattle, WA')">Apply Now <i class="fas fa-paper-plane"></i></a>
+                            </div>
+                        </div>
+                    </div>
+            
 
-</div>
-<!-- Logout Tab -->
-<div id="logout" class="tab-content" style="display: none; text-align: center; padding: 185px 20px;">
-    <header>
-        <h1 style="padding-left: 210px;">You have been logged out</h1>
-      
-        <!-- Buttons Section -->
-    </header>
-    <div >
-        <a href="login.html" class="btn btn-danger">Logout</a>
+            <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#" onclick="prevPage()">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#" id="page-number">1</a></li>
+                <li class="page-item"><a class="page-link" href="#" onclick="nextPage()">Next</a></li>
+            </ul>
+        </nav>
+    </div>
+        </div>
     </div>
 </div>
+
 <!-- Popup Form -->
 <div id="popup-form" class="form_popup_content" style="display: none;">
-    <div class="popup_form">
-        <span onclick="closePopup()" class="onclickbtn">&times;</span>
-        <h2 class="h2_btn">Apply for Job</h2>
+    <div class="popup_form" style="max-width: 500px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); position: relative;">
+        <span onclick="closePopup()" class="onclickbtn" style="position: absolute; top: 15px; right: 20px; font-size: 22px; cursor: pointer;">&times;</span>
+        <h2 class="h2_btn" style="text-align: center; margin-bottom: 25px; color: #003054;">Apply for Job</h2>
+        
         <form action="submit_application.php" method="POST">
-            <label>Position:</label>
-            <input type="text" id="popup-position" name="position" readonly>
             
-            <label>Company:</label>
-            <input type="text" id="popup-company" name="company" readonly>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px; text-align: left;">Position:</label>
+                <input type="text" id="popup-position" name="position" readonly 
+                    style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9;">
+            </div>
             
-            <label>Location:</label>
-            <input type="text" id="popup-location" name="location" readonly>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px;text-align: left;">Company:</label>
+                <input type="text" id="popup-company" name="company" readonly 
+                    style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9;">
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; font-weight: bold; margin-bottom: 5px;text-align: left;">Location:</label>
+                <input type="text" id="popup-location" name="location" readonly 
+                    style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; background: #f9f9f9;">
+            </div>
 
-            <div class="btn-btn">
-                <button type="submit" class="submit-btn-btn">Apply</button>
-                <button type="button" onclick="closePopup()" class="close-btn">Close</button>
+            <div style="display: flex; justify-content: space-between; align-items: center;text-align: left;">
+                <button type="submit" class="submit-btn-btn" 
+                    style="height: 40px; width: 90px;  color: #fff; border: none; border-radius: 6px; cursor: pointer;">Apply</button>
+                
+                <button type="button" onclick="closePopup()" class="close-btn" 
+                    style="height: 40px; width: 90px; color: #fff; border: none; border-radius: 6px; cursor: pointer;">Close</button>
             </div>
         </form>
     </div>
 </div>
 
+    </div>
+
+</div>
+
+<!-- Logout Tab -->
+<div id="logout" class="tab-content" style="display: none; text-align: center; ">
+    <div class="logout-container">
+        <h1>You have been logged out</h1>
+        <p>Thank you for visiting. You can log back in anytime.</p>
+        
+        <a href="login.html" class="btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg,#E5B20A); color: #000000; padding: 12px 25px; border-radius: 30px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); font-weight: bold; transition: 0.3s;">
+            <i class="fas fa-power-off" style="font-size: 18px;"></i> Logout
+        </a>
+        
+    </div>
+    
+</div>
+<!-- JavaScript -->
+<script>
+    function openPopup(position, company, location) {
+        document.getElementById('popup-position').value = position;
+        document.getElementById('popup-company').value = company;
+        document.getElementById('popup-location').value = location;
+        document.getElementById('popup-form').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('popup-form').style.display = 'none';
+    }
+</script>
 <script>
     function showTab(tabId) {
     const tabs = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => tab.style.display = 'none');
     document.getElementById(tabId).style.display = 'block';
 }
-
 function openPopup(position, company, location) {
-    document.getElementById("popup-form").style.display = "flex";
-    document.getElementById("popup-position").value = position;
-    document.getElementById("popup-company").value = company;
-    document.getElementById("popup-location").value = location;
+    document.getElementById('popup-position').value = position;
+    document.getElementById('popup-company').value = company;
+    document.getElementById('popup-location').value = location;
+
+    document.getElementById('popup-form').style.display = 'flex';
 }
 
 function closePopup() {
-    document.getElementById("popup-form").style.display = "none";
+    document.getElementById('popup-form').style.display = 'none';
 }
+
 
 </script>
 <!-- jQuery -->

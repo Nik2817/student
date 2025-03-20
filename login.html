@@ -1,25 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
+ 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Login</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Employee Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+ 
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+ 
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f6f9;
+            overflow: hidden;
+        }
+ 
+        .login-container {
+            display: flex;
+            width: 900px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 1s ease-out forwards;
+        }
+ 
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+ 
+        @keyframes bgMove {
+    0% { background-position: center; }
+    50% { background-position: right center; }
+    100% { background-position: center; }
+}
+ 
+.login-left {
+    width: 50%;
+    background:
+        url('4.png') no-repeat center/cover,
+        linear-gradient(135deg, rgba(0, 48, 84, 0.8), rgba(0, 91, 150, 0.8));
+    color: white;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideInLeft 1s ease-out forwards 0.5s, bgMove 10s infinite linear;
+}
+ 
+ 
+ 
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+ 
+        .login-left h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+ 
+        .login-left span {
+            color: #E5B20A;
+        }
+ 
+        .login-left p {
+            font-size: 1.1rem;
+            color: #ddd;
+            max-width: 80%;
+            margin-bottom: 2px;
+        }
+ 
+        .login-right {
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(50px);
+            animation: slideInRight 1s ease-out forwards 0.5s;
+        }
+ 
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+ 
+        .emp-logo img {
+            width: 80px;
+            border-radius: 50%;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+ 
+        .emp-input-group {
+            width: 100%;
+            margin-bottom: 15px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+ 
+        .emp-input-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+ 
+        .emp-input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 16px;
+        }
+ 
+        .password-container {
+            position: relative;
+        }
+ 
+        .password-container i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+ 
+        .emp-login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #003054;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.3s ease-in-out;
+        }
+ 
+        .emp-login-btn:hover {
+            background-color: #005b96;
+            transform: scale(1.05);
+        }
+ 
+        .forgot-password {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #003054;
+            text-decoration: none;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out 1s forwards;
+        }
+ 
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+ 
+        .floating-icons {
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            font-size: 40px;
+            opacity: 0.3;
+            color: #005b96;
+            animation: floatIcons 6s ease-in-out infinite alternate;
+        }
+ 
+        @keyframes floatIcons {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(20px);
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="floating-icons">
+                <i class="fa-solid fa-circle"></i>
+            </div>
+            <h1>Hello <span>User..!</span> 👋 <i class="fa-solid fa-star" style="color: gold;"></i></h1>
+            <p>Welcome to the Portal.</p>
+            <p>Stay productive with seamless access to your dashboard.</p>
+        </div>
+ 
+        <div class="login-right">
+            <div class="emp-logo">
+                <img src="/profile.avif" alt="profile">
+            </div>
+            <h3>Welcome!</h3>
+            
+            <!-- Form with Redirect Logic -->
+            <form id="loginForm" method="POST">
+                <div class="emp-input-group">
+                    <label>Email</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                </div>
+                <div class="emp-input-group">
+                    <label>Password</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="********" required>
+                        <i class="fas fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                    </div>
+                </div>
+                <button type="submit" class="emp-login-btn">Login</button>
+                <a href="#" class="forgot-password">Forgot My Password</a>
+            </form>            
+        </div>
+    </div>
 
-<div class="login-container">
-    <h2>Student Login</h2>
-    <form action="dashboard.html" method="get">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.classList.toggle('fa-eye-slash');
+        });
 
-        <button type="submit">Login</button>
-    </form>
-</div>
+        // Form submit handler with redirection
+        const form = document.getElementById('loginForm');
 
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();  // Prevent form from submitting normally
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Basic validation (simulating login)
+            if (email && password) {
+                // Redirect to dashboard
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Please fill in all fields.");
+            }
+        });
+    </script>
 </body>
+
+ 
 </html>
